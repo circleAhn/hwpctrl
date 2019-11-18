@@ -1,6 +1,7 @@
 // C#
 // 한글의 수식을 클릭한 채로 GetValue 라벨박스를 클릭하면 그 수식에 맞는 그래프를 변환해줍니다.
 // namespace HangulGraphAddIn
+// public partial class Form1 : Form
         
 private void GetValue_Click(object sender, EventArgs e)
 {
