@@ -4,24 +4,29 @@
         
 private void GetValue_Click(object sender, EventArgs e)
 {
-    //axHwpCtrl1.CurSelectedCtrl;
-
-    HWPCONTROLLib.DHwpAction act = (HWPCONTROLLib.DHwpAction)axHwpCtrl1.CreateAction("EquationModify");
-    HWPCONTROLLib.DHwpParameterSet pset = (HWPCONTROLLib.DHwpParameterSet)act.CreateSet();
+    string EQ = null;
+    
+    // 클릭한 수식 스크립트 화면을 띄우는 액션입니다.
+    HWPCONTROLLib.DHwpAction act 
+        = (HWPCONTROLLib.DHwpAction)axHwpCtrl1.CreateAction("EquationModify");
+    HWPCONTROLLib.DHwpParameterSet pset
+        = (HWPCONTROLLib.DHwpParameterSet)act.CreateSet();
     act.GetDefault(pset);
     act.Execute(pset);
 
     try
     {
-        string EQ = (string)pset.Item("String");
+        EQ = (string)pset.Item("String");
         if (EQ != null)
         {
+            // ScriptEquation 객체를 정의하여 가져온 수식 스크립트를 연산식에 맞는 트리로 변환시켜줍니다.
             ScriptEquation scriptEq = new ScriptEquation(EQ);
             scriptEq.ConvertTree();
 
             const int numPt = 201;
             List<double> FxList = scriptEq.GetOutputList(numPt);
 
+            // 변환한 트리의 x값에 값을 넣어 곡선을 그립니다.
             HWPCONTROLLib.DHwpAction DrawObjCreatorCurve = (HWPCONTROLLib.DHwpAction)axHwpCtrl1.CreateAction("DrawObjCreatorCurve");
             HWPCONTROLLib.DHwpParameterSet ShapeObject = (HWPCONTROLLib.DHwpParameterSet)DrawObjCreatorCurve.CreateSet();
             HWPCONTROLLib.DHwpParameterSet drawLayOut = (HWPCONTROLLib.DHwpParameterSet)ShapeObject.CreateItemSet("ShapeDrawLayOut", "DrawLayOut");
